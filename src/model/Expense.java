@@ -19,11 +19,25 @@ private Category category;
     
     //CONSTRUCTOR
     public Expense(String expenseName, Category category, double plannedAmount){
-        this.expenseName= expenseName;
-        this.category= category;
-        this.plannedAmount= plannedAmount;
+        if (expenseName == null || expenseName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Expense name cannot be empty.");
+        }
+        if (category == null) {
+            throw new IllegalArgumentException("Category cannot be null.");
+        }
 
+        if (plannedAmount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative.");
+        }
+
+        this.expenseName = expenseName.trim();
+        this.category = category;
+        this.plannedAmount = plannedAmount;
+        this.actualAmount = 0;
+        this.purchased = false;
+        this.purchasingDate = null;
     }
+
 
     //GETTERS
     public String getExpenseName(){
@@ -43,25 +57,40 @@ private Category category;
         return actualAmount;
     }
     
-    public boolean getPurchased(){
-        return purchased;
+   public boolean isPurchased() {
+    return purchased;
     }
 
     public LocalDate getPurchasingDate(){
         return purchasingDate;
     }
     //SETTERS
-    public void setPurchased(boolean purchased){
-        this.purchased= purchased;
-        
+     public void setPlannedAmount(double plannedAmount) {
+
+        if (plannedAmount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative.");
+        }
+
+        this.plannedAmount = plannedAmount;
     }
-    
-    public void setPurchasingDate(LocalDate purchasingDate){
-        this.purchasingDate= purchasingDate;
-    
+
+    // MARK EXPENSE AS PURCHASED
+    public void markAsPurchased(double actualAmount, LocalDate purchasingDate) {
+
+        if (actualAmount < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative.");
+        }
+
+        if (purchasingDate == null) {
+            throw new IllegalArgumentException("Purchase date cannot be null.");
+        }
+
+        this.actualAmount = actualAmount;
+        this.purchasingDate = purchasingDate;
+        this.purchased = true;
     }
-
-
-
-
 }
+
+
+
+
